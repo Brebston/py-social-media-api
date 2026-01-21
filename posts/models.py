@@ -6,7 +6,8 @@ class Hashtag(models.Model):
     name = models.CharField(max_length=50, unique=True, db_index=True)
 
     def save(self, *args, **kwargs):
-        self.name = self.name or "".lower()
+        # Normalize hashtags: store without leading '#', lowercased.
+        self.name = (self.name or "").strip().lstrip("#").lower()
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
